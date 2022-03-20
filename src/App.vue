@@ -1,6 +1,5 @@
 <template>
   <SkillCard />
-  <SkillCard />
 </template>
 
 <script setup lang="ts">
@@ -15,6 +14,6 @@
     color: #ece8e8;
     font-size: 12px;
     line-height: 1.2;
-    font-family: 'Roboto Serif', sans-serif, helvetica;
+    font-family: Roboto, sans-serif, helvetica;
   }
 </style>

@@ -1,10 +1,32 @@
 .SkillCard {
   padding: 16px;
-  padding-bottom: 24px;
+  padding-bottom: 16px;
   border-bottom: 1px solid lighten(#242424, 8);
 }
 
 .title {
   margin-bottom: 8px;
   font-size: 16px;
+}
+
+.handle-icon {
+  height: 12px;
+  fill: #383838;
+}
+
+.handle-button {
+  position: relative;
+  cursor: pointer;
+  margin-top: 16px;
+  border-radius: 50%;
+  border: none;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  &:not(:last-child) {
+    margin-right: 8px;
+  }
 }
