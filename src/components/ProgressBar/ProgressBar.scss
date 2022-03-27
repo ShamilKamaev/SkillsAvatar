@@ -1,5 +1,44 @@
 $color: #8955FF;
 
+.ProrgessBar {
+  height: 8px;
+  background-color: #4e4e4e;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.progress-scale {
+  height: 100%;
+  border-radius: 9999px;
+  background-color: $color;
+  transition: 100ms linear;
+  width: var(--progress);
+  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    transform-origin: 0;
+    border-radius: 9999px;
+    background: linear-gradient(90deg, rgba(2, 0, 36, 0) 0%, rgba(255, 255, 255, 0.5) 100%);
+    animation-name: progress-animation;
+    animation-duration: 1.75s;
+    animation-timing-function: cubic-bezier(0.20, 0.60, 0.40, 1);
+    animation-iteration-count: infinite;
+    animation-direction: normal;
+    animation-play-state: paused;
+  }
+
+  &--isRuning {
+    &::before {
+      animation-play-state: running;
+    }
+  }
+}
+
 @keyframes progress-animation {
   0% {
     transform: scaleX(0);
@@ -12,39 +51,5 @@ $color: #8955FF;
   100% {
     transform: scaleX(1);
     opacity: 0;
-  }
-}
-
-.ProrgessBar {
-  height: 8px;
-  background-color: #4e4e4e;
-  border-radius: 9999px;
-  overflow: hidden;
-}
-
-.progress-scale {
-  height: 100%;
-  border-radius: 9999px;
-  background-color: $color;
-  transition: 500ms linear;
-  width: var(--progress);
-  filter: drop-shadow(0 0 5px lighten($color, 3));
-  position: relative;
-
-  &::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 100%;
-    width: 100%;
-    transform-origin: 0;
-    background: linear-gradient(90deg, rgba(2, 0, 36, 0) 0%, rgba(255, 255, 255, 0.5) 100%);
-    border-radius: 9999px;
-    animation-name: progress-animation;
-    animation-duration: 1.75s;
-    animation-timing-function: cubic-bezier(0.20, 0.60, 0.40, 1);
-    animation-iteration-count: infinite;
-    animation-direction: normal;
   }
 }
