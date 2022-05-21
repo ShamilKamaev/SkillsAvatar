@@ -9,11 +9,6 @@
   font-size: 16px;
 }
 
-.handle-icon {
-  height: 12px;
-  fill: #383838;
-}
-
 .handle-button {
   position: relative;
   cursor: pointer;
@@ -25,8 +20,27 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  transition: transform ease 150ms;
 
   &:not(:last-child) {
     margin-right: 8px;
   }
+
+  &:not(:disabled) {
+    &:hover {
+      .handle-icon {
+        transform: scale(1.2);
+      }
+    }
+  }
+
+  &:active {
+    transform: scale(0.9);
+  }
+}
+
+.handle-icon {
+  height: 12px;
+  fill: #383838;
+  transition: transform ease 250ms;
 }
