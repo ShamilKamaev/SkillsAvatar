@@ -1,6 +1,8 @@
 <template>
   <div class="SkillCard">
-    <div class="title">Skill card title</div>
+    <div class="title">{{ title }}</div>
+
+    <button @click="$emit('removeCard', id)">x</button>
 
     <ProgressBar
       :progress="timeLeftInPercents"
@@ -55,14 +57,14 @@
     </div>
 
     <div>
-      {{ timeLefInHHMMSS }}
+      {{ timeLefInHHMMSS }} [{{ timeLeftInPercents }}%]
     </div>
     
   </div>
 </template>
 
 <script setup lang="ts">
-  import { onMounted, ref, computed } from 'vue'
+  import { defineProps, defineEmits, ref, computed } from 'vue'
   import ProgressBar from '~/components/ProgressBar'
 
   import PuaseIcon from '~/assets/images/svg/pause.svg'
@@ -71,7 +73,22 @@
   import FastForwardIcon from '~/assets/images/svg/fast-forward.svg'
   import FastBackwardIcon from '~/assets/images/svg/fast-backward.svg'
 
-  const [timeRange, elapsedSeconds, isRuning] = [ref<number>(1), ref<number>(0), ref<boolean>(false)]
+  const [timeRange, elapsedSeconds, isRuning] = [
+    ref<number>(1),
+    ref<number>(0),
+    ref<boolean>(false)
+  ]
+
+  const props = defineProps<{
+    title: string,
+    id: string | number,
+  }>()
+
+  defineEmits({
+    removeCard(id: string | number):string | number {
+      return id || ''
+    }
+  })
 
   let counterInterval: ReturnType<typeof setInterval>
   
@@ -91,7 +108,7 @@
   )
 
   const timeIsUp = computed(():boolean =>
-    elapsedSeconds === timeRangeInSeconds
+    elapsedSeconds.value === timeRangeInSeconds.value
   )
 
   const runCounter = ():void => {
@@ -118,17 +135,17 @@
   }
 
   const fastBackward = ():void | number => {
-    if (elapsedSeconds.value < 10) return elapsedSeconds.value = 0
-    elapsedSeconds.value = elapsedSeconds.value - 10
+    if (elapsedSeconds.value < 60) return elapsedSeconds.value = 0
+    elapsedSeconds.value = elapsedSeconds.value - 60
   }
 
   const fastForward = ():void | boolean => {
-    if ((elapsedSeconds.value + 10) >= timeRangeInSeconds.value) {
+    if ((elapsedSeconds.value + 60) >= timeRangeInSeconds.value) {
       elapsedSeconds.value = timeRangeInSeconds.value
       clearInterval(counterInterval)
       return isRuning.value = false
     }
-    elapsedSeconds.value = elapsedSeconds.value + 10
+    elapsedSeconds.value = elapsedSeconds.value + 60
   }
 
 </script>

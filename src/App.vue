@@ -1,35 +1,10 @@
 <template>
-  <SkillCard />
+  <SkillCardsList />
 </template>
 
 <script setup lang="ts">
-  import { onMounted, ref } from 'vue'
-  import SkillCard from '~/components/SkillCard'
+import SkillCardsList from '~/components/SkillCardsList'
 
-  let SkillCardsList = ref<Object>({})
-
-  onMounted(() => {
-    initDataFromLocalStorage()
-  })
-
-
-  const initDataFromLocalStorage = ():void => {
-    const localStorage = window.localStorage
-
-    localStorage.setItem('cardsList', JSON.stringify(
-      {
-        'kdslkm1221laskl': {
-          title: 'Skill card title',
-          elapsedSeconds: 31,
-          timeRange: 1,
-        }
-      }
-    ))
-
-    SkillCardsList = JSON.parse(localStorage.getItem('cardsList') || '{}')
-
-    console.log(SkillCardsList)
-  }
 </script>
 
 <style>

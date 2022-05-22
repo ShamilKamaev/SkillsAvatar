@@ -9,9 +9,11 @@
     "cc": "create-component"
   },
   "dependencies": {
+    "uuid": "^8.3.2",
     "vue": "^3.2.25"
   },
   "devDependencies": {
+    "@types/uuid": "^8.3.4",
     "@vitejs/plugin-vue": "^2.2.0",
     "blueprint-templates-cli": "^0.1.13",
     "sass": "^1.49.7",
