@@ -1,50 +1,66 @@
 <template>
   <div class="SkillCard">
-    <div class="title">{{ title }}</div>
+    <div class="head">
+      <div class="title">{{ title }}</div>
 
-    <button @click="$emit('removeCard', id)">x</button>
+      <button
+        class="remove-card-button"
+        @click="$emit('removeCard', id)"
+      >
+        x
+      </button>
+    </div>
 
     <ProgressBar
       :progress="timeLeftInPercents"
       :is-runing="isRuning"
+      class="progress-bar"
     />
 
-    <div class="handle-buttons">
-      <button
-        class="handle-button"
-        @click="fastBackward"
-      >
-        <FastBackwardIcon class="handle-icon" />
-      </button>
+    <div class="handlers-and-time">
+      <div class="handle-buttons">
+        <button
+          class="handle-button"
+          @click="fastBackward"
+        >
+          <FastBackwardIcon class="handle-icon" />
+        </button>
 
-      <button
-        class="handle-button"
-        :disabled="timeIsUp"
-        @click="playPauseHandle"
-      >
-        <component
-          :is="isRuning ? PuaseIcon : PlayIcon"
-          class="handle-icon"
-        />
-      </button>
+        <button
+          class="handle-button"
+          :disabled="timeIsUp"
+          @click="playPauseHandle"
+        >
+          <component
+            :is="isRuning ? PuaseIcon : PlayIcon"
+            class="handle-icon"
+          />
+        </button>
 
-      <button
-        class="handle-button"
-        @click="stopCounter"
-      >
-        <StopIcon class="handle-icon" /> 
-      </button>
+        <button
+          class="handle-button"
+          @click="stopCounter"
+        >
+          <StopIcon class="handle-icon" /> 
+        </button>
 
-      <button
-        class="handle-button"
-        :disabled="timeIsUp"
-        @click="fastForward"
-      >
-        <FastForwardIcon class="handle-icon" /> 
-      </button>
+        <button
+          class="handle-button"
+          :disabled="timeIsUp"
+          @click="fastForward"
+        >
+          <FastBackwardIcon class="handle-icon handle-icon--fast-forward" />
+        </button>
+      </div>
+
+      <div class="time-left">
+        {{ timeLefInHHMMSS }} [{{ timeLeftInPercents }}%]
+      </div>
     </div>
 
-    <input
+
+
+    <!-- <input
       v-model.number="timeRange"
       type="range"
       min="1"
@@ -54,23 +70,18 @@
 
     <div class="time-range-container">
       {{ timeRange }}
-    </div>
-
-    <div>
-      {{ timeLefInHHMMSS }} [{{ timeLeftInPercents }}%]
-    </div>
+    </div> -->
     
   </div>
 </template>
 
 <script setup lang="ts">
-  import { defineProps, defineEmits, ref, computed } from 'vue'
+  import { ref, computed } from 'vue'
   import ProgressBar from '~/components/ProgressBar'
 
   import PuaseIcon from '~/assets/images/svg/pause.svg'
   import PlayIcon from '~/assets/images/svg/play.svg'
   import StopIcon from '~/assets/images/svg/stop.svg'
-  import FastForwardIcon from '~/assets/images/svg/fast-forward.svg'
   import FastBackwardIcon from '~/assets/images/svg/fast-backward.svg'
 
   const [timeRange, elapsedSeconds, isRuning] = [
@@ -84,10 +95,10 @@
     id: string | number,
   }>()
 
-  defineEmits({
-    removeCard(id: string | number):string | number {
+  const emit = defineEmits({
+    removeCard(id: string | number):string | number{
       return id || ''
-    }
+    },
   })
 
   let counterInterval: ReturnType<typeof setInterval>
@@ -111,35 +122,36 @@
     elapsedSeconds.value === timeRangeInSeconds.value
   )
 
-  const runCounter = ():void => {
+  function runCounter():void {
     isRuning.value = true
     counterInterval = setInterval(():void => {
       if (timeLeftInPercents.value >= 100) return clearInterval(counterInterval)
       elapsedSeconds.value ++
+      
     }, 1000)
   }
 
-  const pauseCounter = ():void => {
+  function pauseCounter():void {
     isRuning.value = false
     clearInterval(counterInterval)
   }
 
-  const stopCounter = ():void => {
+  function stopCounter():void {
     elapsedSeconds.value = 0
     isRuning.value = false
     clearInterval(counterInterval)
   }
 
-  const playPauseHandle = ():void => {
+  function playPauseHandle():void {
     isRuning.value ? pauseCounter() : runCounter()
   }
 
-  const fastBackward = ():void | number => {
+  function fastBackward():void | number {
     if (elapsedSeconds.value < 60) return elapsedSeconds.value = 0
     elapsedSeconds.value = elapsedSeconds.value - 60
   }
 
-  const fastForward = ():void | boolean => {
+  function fastForward():void | boolean {
     if ((elapsedSeconds.value + 60) >= timeRangeInSeconds.value) {
       elapsedSeconds.value = timeRangeInSeconds.value
       clearInterval(counterInterval)

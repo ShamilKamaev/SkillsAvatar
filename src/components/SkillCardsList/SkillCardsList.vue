@@ -1,12 +1,19 @@
 <template>
-  <SkillCard
-    v-for="(skillCard, key) in SkillCardsList"
-    :title="skillCard.title"
-    :id="key"
-    :key="key"
-    @remove-card="removeCard"
-  />
-  <button @click="addNewSkillCard">+</button>
+  <div class="SkillCardsList">
+    <SkillCard
+      v-for="(skillCard, key) in skillCardsList"
+      :title="skillCard.title"
+      :id="key"
+      :key="key"
+      @remove-card="removeCard"
+    />
+  </div>
+  <button
+    class="add-card-button" 
+    @click="addCard"
+  >
+      Add card
+  </button>
 </template>
 
 <script setup lang="ts">
@@ -15,33 +22,46 @@
   import SkillCard from '~/components/SkillCard'
   import { SkillCards } from './types'
 
-  const SkillCardsList = ref<SkillCards>()
+  class SkillCardItem {
+    title: string
+    timeRange: number
+    elapsedSeconds: number
+
+    constructor(title: string, timeRange: number = 1) {
+      this.title = title
+      this.timeRange = timeRange
+      this.elapsedSeconds = 0
+    }
+  }
+
+  const skillCardsList = ref<SkillCards>()
+  const localStorage = window.localStorage
 
   onMounted(() => {
     initDataFromLocalStorage()
   })
 
-
   const initDataFromLocalStorage = ():void => {
-    const localStorage = window.localStorage
-
-    SkillCardsList.value = JSON.parse(localStorage.getItem('cardsList') || '{}')
+    skillCardsList.value = JSON.parse(localStorage.getItem('cardsList') || '{}')
   }
 
-  const addNewSkillCard = ():void => {
-    const newSkillCard = {
-      title: 'New skill card',
-      elapsedSeconds: 0,
-      timeRange: 1,
+  const addCard = ():void => {
+    skillCardsList.value = {
+      ...skillCardsList.value,
+      [uuidv4()]: new SkillCardItem('New'),
     }
-
-    SkillCardsList.value = {...SkillCardsList.value, [uuidv4()]: newSkillCard}
+    saveToLocalStorage()
   }
 
-  const removeCard = (id: string | number):void => {
-    if (SkillCardsList.value) {
-      delete SkillCardsList.value[id]
+  const removeCard = (id: string | number): void => {
+    if (skillCardsList.value) {
+      delete skillCardsList.value[id]
     }
+    saveToLocalStorage()
+  }
+
+  const saveToLocalStorage = ():void => {
+    localStorage.setItem('cardsList', JSON.stringify(skillCardsList.value))
   }
 
 </script>
