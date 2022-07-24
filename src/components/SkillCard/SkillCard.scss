@@ -69,8 +69,7 @@
   justify-content: center;
   border-radius: 9999px;
   background-color: transparent;
-  color: #EFEFEF;
-  border: 1px solid #EFEFEF;
+  border: none;
   cursor: pointer;
   position: absolute;
   right: 0;
@@ -90,4 +89,10 @@
 
 .time-left {
   font-size: 10px;
+}
+
+.remove-card-icon {
+  fill: #EFEFEF;
+  width: 9px;
+  height: 9px;
 }

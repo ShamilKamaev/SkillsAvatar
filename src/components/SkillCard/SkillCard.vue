@@ -7,7 +7,7 @@
         class="remove-card-button"
         @click="$emit('removeCard', id)"
       >
-        x
+        <CrossIcon class="remove-card-icon" />
       </button>
     </div>
 
@@ -83,6 +83,7 @@
   import PlayIcon from '~/assets/images/svg/play.svg'
   import StopIcon from '~/assets/images/svg/stop.svg'
   import FastBackwardIcon from '~/assets/images/svg/fast-backward.svg'
+   import CrossIcon from '~/assets/images/svg/cross.svg'
 
   const [timeRange, elapsedSeconds, isRuning] = [
     ref<number>(1),
